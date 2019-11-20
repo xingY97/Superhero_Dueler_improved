@@ -85,13 +85,105 @@ class Hero:
         for defend in self.armors:
             total_defend += defend.block()
         return total_defend
+
+    def take_damage (self,damage):
+        """Updates self.current_health to reflect the damage minus the defense"""
+        #TODO: Create a method that updates self.current_health to the current 
+        #Minus the amount returned from calling self.defend(damage).
+        defense = self.defend(damage)
+        self.current_health -= damage - defense
+        
+    def is_alive(self):
+        """Return True or False depending on whether the hero is alive or not"""
+        #TODO: check the current_health of the hero
+        # if it is <=0, then return False. Otherwise, they still have health
+        #and are therefore alive, so return True
+        if self.current_health > 0:
+            return True
+        else:
+            return False
+    def fight(self, opponent):  
+    
+    # TODO: Fight each hero until a victor emerges.
+    # Phases to implement:
+    # 0) check if at least one hero has abilities. If no hero has abilities, print "Draw"
+    # 1) else, start the fighting loop until a hero has won
+    # 2) the hero (self) and their opponent must attack each other and each must take damage from the other's attack
+    # 3) After each attack, check if either the hero (self) or the opponent is alive
+    # 4) if one of them has died, print "HeroName won!" replacing HeroName with the name of the hero, and end the fight loop
+    
+        if len(self.abilities) == 0 and len(opponent.abilities) == 0:
+            print("Draw")
+        while self.is_alive() and opponent.is_alive():
+            self_damage = self.attack()
+            opponent.take_damage(self_damage)
+            opponent_damage = opponent.attack()
+            self.take_damage(opponent_damage)
+
+        if opponent.is_alive():
+            print("Dumbledore  won")
+        
+        else:
+            print("Wonderwoman won")
+
+    def add_weapon(self,weapon):
+        """add weapon to self.abilities"""
+        #TODO: This method will append the weapon object passed in as an
+        #Argument to self.abilities.
+        #This means that self.abilitites will be a list of 
+        #abilitites and weapons
+        self.abilities.append(weapon)
+
+class Weapon(Ability):
+    def attack(self):
+        """This method returns a random value between one half to the full attack power of the weapon."""
+        #TODO: Use integer division to find half of the max_damage value
+        #Then return a random integer bwtween half of max_damage and max_damage
+        return random.randint(self.max_damage//2,self.max_damage)
+
+class Team:
+    def __init__(self,name):
+        """Initialize your team with its team name and an empty list of heroes"""
+        self.name = name
+        self.heroes = list()
+
+    def remove_hero(self,name):
+        """Remove hero from heroes list. if hero isn't found return 0."""
+        foundHero = False
+        #loop through each hero in our list
+        for hero in self.heroes:
+            # if we find them, remove them from the list
+            if hero.name == name:
+                self.heroes.remove(hero)
+                #set our indicator to True
+                foundHero = True
+        # if we looped through our list and did not find our hero,
+        # the indicator would have never changed, so return 0
+        if not foundHero:
+            return 0
+    def view_all_heroes(self):
+        """print out all heroes to the consle."""
+        #TODO: loop over the list of heroes and print their names to the terminal one by one.
+        for heroes in self.heroes:
+            print(heroes.name)
+
+    def add_hero(self, hero)
+        """Add hero object to self.heroes."""
+        #TODO: Add the hero object that is passed in to the list of heroes in
+        #self.heroes
+        self.heroes.append(hero)
+        return
+
+    
+        
+
+    
+
         
 if __name__ == "__main__":
     # If you run this file from the terminal
     # this block of code is executed.
-    ability = Ability("Great Debugging", 50)
-    another_ability = Ability("Smarty Pants", 90)
-    hero = Hero("Grace Hopper", 200)
-    hero.add_ability(ability)
-    hero.add_ability(another_ability)
+    hero = Hero("Wonder Woman")
+    weapon = Weapon("Lasso of Truth", 90)
+    hero.add_weapon(weapon)
     print(hero.attack())
